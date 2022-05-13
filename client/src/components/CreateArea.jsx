@@ -7,22 +7,43 @@ import axios from "axios";
 function CreateArea(props) {
   const [inputTitle, setInputTitle] = useState("");
   const [inputContent, setInputContent] = useState("");
+  const [titlePlaceholder, setTiTlePlaceholder] = useState("Title");
+  const [contentPlaceholder, setContentPlaceholder] = useState("Take a note...");
   const [isExpanded, setIsExpanded] = useState(false);
+  const [titleInputStyle, setTitleInputStyle] = useState({})
+  const [contentInputStyle, setContentInputStyle] = useState({})
+
+
   
 
   const handleTitleChange = (event) => {
     setInputTitle(event.target.value);
+    
   };
 
   const handleContentChange = (event) => {
     setInputContent(event.target.value);
+    
   };
 
   const expandInput = () => {
     setIsExpanded(true);
   }
 
-
+  const handleEmptyInput = () => {
+    setTiTlePlaceholder("Please enter title");
+    setContentPlaceholder("Please enter content");
+    setTitleInputStyle({
+      borderTop: "1px solid red",
+      borderLeft: "1px solid red",
+      borderRight: "1px solid red",
+    })
+    setContentInputStyle({
+      borderBottom: "1px solid red",
+      borderLeft: "1px solid red",
+      borderRight: "1px solid red",
+    })
+  }
 
   const handleSubmit = (noteTitle, noteContent) => {
     const data = {
@@ -41,19 +62,29 @@ function CreateArea(props) {
   return (
     <div>
       <form className="create-note" onSubmit={(e) => {
+                if (inputTitle == "" && inputContent == "") {
+                  e.preventDefault();
+                  handleEmptyInput();
+                } else {
+                  e.preventDefault();
+                  handleSubmit(inputTitle, inputContent);
+                  setInputContent("");
+                  setInputTitle("");
+                  setTiTlePlaceholder("Title");
+                  setContentPlaceholder("Take a note...");
+                  setTitleInputStyle({});
+                  setContentInputStyle({});
 
-                e.preventDefault();
-                handleSubmit(inputTitle, inputContent);
-                setInputContent("");
-                setInputTitle("");
+                
+                }
                 
             }}>
         {isExpanded === true && 
             <input 
             name="title"
-            placeholder="Title"
+            placeholder={titlePlaceholder}
             onChange={handleTitleChange}
-            
+            style={titleInputStyle}
             value={inputTitle}
             
             />
@@ -61,10 +92,11 @@ function CreateArea(props) {
         
         <textarea
           name="content"
-          placeholder="Take a note..."
+          placeholder={contentPlaceholder}
           rows={isExpanded === true ? 3 : 1}
           onChange={handleContentChange}
           onClick={expandInput}
+          style={contentInputStyle}
           value={inputContent}
           
         />

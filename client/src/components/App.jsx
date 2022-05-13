@@ -15,10 +15,6 @@ function App() {
     });
   }, [notes])
 
-  // setNotes((prevItems) => {
-  //   return [...prevItems, { title: inputTitle, content: inputContent }];
-  //   });
-  // };
 
   const deleteItem = (id) => {
     setNotes((prevItems) => {
