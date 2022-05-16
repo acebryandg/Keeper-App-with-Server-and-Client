@@ -9,8 +9,8 @@ function Note(props) {
       <p>{props.noteContent}</p>
       <button
         onClick={() => {
-          props.onDelete(props.id);
-        }}
+          props.onDelete(props.id)
+          }}
       >
         <DeleteIcon />
       </button>

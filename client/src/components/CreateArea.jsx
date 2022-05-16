@@ -18,12 +18,18 @@ function CreateArea(props) {
 
   const handleTitleChange = (event) => {
     setInputTitle(event.target.value);
-    
+    setTitleInputStyle({});
+    setContentInputStyle({});
+    setTiTlePlaceholder("Title");
+    setContentPlaceholder("Take a note...");
   };
 
   const handleContentChange = (event) => {
     setInputContent(event.target.value);
-    
+    setContentInputStyle({});
+    setTitleInputStyle({});
+    setTiTlePlaceholder("Title");
+    setContentPlaceholder("Take a note...");
   };
 
   const expandInput = () => {
@@ -51,11 +57,7 @@ function CreateArea(props) {
       content: noteContent
     }
     axios.post(`http://localhost:4000/`, data)
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        console.log("dsljds");   
-      })
+      .then(response => {console.log(response.data)})
   }
   
 
@@ -66,7 +68,6 @@ function CreateArea(props) {
                   e.preventDefault();
                   handleEmptyInput();
                 } else {
-                  e.preventDefault();
                   handleSubmit(inputTitle, inputContent);
                   setInputContent("");
                   setInputTitle("");
@@ -74,10 +75,7 @@ function CreateArea(props) {
                   setContentPlaceholder("Take a note...");
                   setTitleInputStyle({});
                   setContentInputStyle({});
-
-                
                 }
-                
             }}>
         {isExpanded === true && 
             <input 
@@ -86,10 +84,8 @@ function CreateArea(props) {
             onChange={handleTitleChange}
             style={titleInputStyle}
             value={inputTitle}
-            
             />
         }
-        
         <textarea
           name="content"
           placeholder={contentPlaceholder}
