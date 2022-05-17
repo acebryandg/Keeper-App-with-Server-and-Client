@@ -13,9 +13,6 @@ function CreateArea(props) {
   const [titleInputStyle, setTitleInputStyle] = useState({})
   const [contentInputStyle, setContentInputStyle] = useState({})
 
-
-  
-
   const handleTitleChange = (event) => {
     setInputTitle(event.target.value);
     setTitleInputStyle({});
@@ -51,15 +48,15 @@ function CreateArea(props) {
     })
   }
 
-  const handleSubmit = (noteTitle, noteContent) => {
-    const data = {
-      title: noteTitle, 
-      content: noteContent
-    }
-    axios.post(`http://localhost:4000/`, data)
-      .then(response => {console.log(response.data)})
+  const generateDate = () => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    const d = new Date();
+    const month = months[d.getMonth()];
+    const day = d.getDate();
+    const year = d.getFullYear();
+
+    return (`${day} ${month} ${year}`)
   }
-  
 
   return (
     <div>
@@ -68,7 +65,7 @@ function CreateArea(props) {
                   e.preventDefault();
                   handleEmptyInput();
                 } else {
-                  handleSubmit(inputTitle, inputContent);
+                  props.onAdd(inputTitle, inputContent, generateDate())
                   setInputContent("");
                   setInputTitle("");
                   setTiTlePlaceholder("Title");

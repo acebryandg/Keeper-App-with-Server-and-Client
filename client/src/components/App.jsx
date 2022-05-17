@@ -12,8 +12,20 @@ function App() {
     axios.get('http://localhost:4000/').then((response) => {
       setNotes(response.data);
     });
+    //console.log('Rendered from useeffect')
   }, []);
 
+  const handleSubmit = (noteTitle, noteContent, noteDate) => {
+    const data = {
+      title: noteTitle, 
+      content: noteContent,
+      date: noteDate
+    }
+    axios.post(`http://localhost:4000/`, data)
+      .then(response => {
+        console.log(response.data)
+      })
+  }
 
   const deleteItem = (id) => {
     axios
@@ -26,13 +38,14 @@ function App() {
           })
         })
       });
-      
   };
 
   return (
     <div>
       <Header />
-      <CreateArea />
+      <CreateArea 
+        onAdd={handleSubmit}
+      />
 
       {notes.map((item, index) => (
         <Note
@@ -40,7 +53,9 @@ function App() {
           id={item._id}
           noteTitle={item.title}
           noteContent={item.content}
+          date={item.date}
           onDelete={deleteItem}
+          
         />
       ))}
 

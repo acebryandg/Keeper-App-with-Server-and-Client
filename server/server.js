@@ -15,7 +15,8 @@ mongoose.connect("mongodb://localhost:27017/keeperAppDB", {useNewUrlParser: true
 //create Note Schema
 const notesSchema = {
     title: String,
-    content: String
+    content: String,
+    date: String
   };
   
   //create model
@@ -38,7 +39,8 @@ app.get("/", (req, res) => {
 app.post("/", function(req, res){
     const newNote = new Note ({
         title: req.body.title,
-        content: req.body.content
+        content: req.body.content,
+        date: req.body.date
     })
 
     newNote.save(function(err){
