@@ -4,9 +4,13 @@ import Footer from './Footer';
 import Note from './Note';
 import CreateArea from './CreateArea';
 import axios from 'axios';
+import EditArea from './EditArea';
 
 function App() {
   const [notes, setNotes] = useState([]);
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [noteTitle, setNoteTitle] = useState('');
+  const [noteContent, setNoteContent] = useState('');
 
   useEffect(() => {
     axios.get('http://localhost:4000/').then((response) => {
@@ -40,11 +44,23 @@ function App() {
       });
   };
 
+  const editItem = (title, content) => {
+    
+    setNoteTitle(title);
+    setNoteContent(content);
+    setModalDisplay(true);
+  }
+
   return (
     <div>
       <Header />
       <CreateArea 
         onAdd={handleSubmit}
+      />
+      <EditArea 
+        modalState={modalDisplay}
+        title={noteTitle}
+        content={noteContent}
       />
 
       {notes.map((item, index) => (
@@ -55,6 +71,10 @@ function App() {
           noteContent={item.content}
           date={item.date}
           onDelete={deleteItem}
+        
+          onEdit={() => {
+            editItem(item.title, item.content);
+          }}
           
         />
       ))}

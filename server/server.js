@@ -1,11 +1,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const e = require("express");
+var cors = require('cors');
+
 
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 
 
 //connect to MongoDB local
@@ -29,6 +33,19 @@ app.get("/", (req, res) => {
             if (foundResults){
                 res.send(foundResults);
                 //console.log(foundResults);
+            }
+        } else {
+            res.send(err);
+        }
+    })
+})
+
+app.get("/notes/:id", (req, res) => {
+
+    Note.find({ _id: req.params.id }, function(err, foundResult) {
+        if (!err) {
+            if (foundResult){
+                res.send(foundResult);
             }
         } else {
             res.send(err);
@@ -63,6 +80,20 @@ app.delete("/delete/:id", function(req, res){
       });
 })
 
+app.patch("/update/:id", function(req, res){
+
+    Note.updateOne(
+        { _id: req.params.id },
+        { $set: req.body },
+        function(err){
+            if (!err) {
+                res.send('Successfully updated item');
+            } else {
+                res.send(err);
+            }
+        }
+      );
+})
 
 
 
